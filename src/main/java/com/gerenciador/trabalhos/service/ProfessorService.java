@@ -2,9 +2,12 @@ package com.gerenciador.trabalhos.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.dto.ProfessorDTO;
 
 import com.gerenciador.trabalhos.model.Professor;
@@ -44,6 +47,19 @@ public class ProfessorService {
                 .stream()
                 .map(this::converterParaDTO)
                 .toList();
+    }
+
+    public PageResponseDTO<ProfessorDTO> listarTodosPaginado(Pageable pageable) {
+        Page<Professor> page = professorRepository.findAll(pageable);
+        return new PageResponseDTO<>(
+                page.getContent().stream().map(this::converterParaDTO).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isFirst(),
+                page.isLast()
+        );
     }
 
     public ProfessorDTO atualizar(Long id, ProfessorDTO dto) {

@@ -2,10 +2,13 @@ package com.gerenciador.trabalhos.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gerenciador.trabalhos.dto.DisciplinaRequestDTO;
 import com.gerenciador.trabalhos.dto.DisciplinaResponseDTO;
+import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.model.Disciplina;
 import com.gerenciador.trabalhos.model.Professor;
 import com.gerenciador.trabalhos.repository.DisciplinaRepository;
@@ -62,6 +65,24 @@ public class DisciplinaService {
                 .stream()
                 .map(d -> buscarPorId(d.getId()))
                 .toList();
+    }
+
+    public PageResponseDTO<DisciplinaResponseDTO> listarTodasPaginado(Pageable pageable) {
+        Page<Disciplina> page = disciplinaRepository.findAll(pageable);
+        List<DisciplinaResponseDTO> content = page.getContent()
+                .stream()
+                .map(d -> buscarPorId(d.getId()))
+                .toList();
+        
+        return new PageResponseDTO<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isFirst(),
+                page.isLast()
+        );
     }
 
     public List<DisciplinaResponseDTO> listarPorProfessor(Long professorId) {

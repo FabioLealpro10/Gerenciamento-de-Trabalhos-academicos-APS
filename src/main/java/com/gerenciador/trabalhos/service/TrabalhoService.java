@@ -2,8 +2,11 @@ package com.gerenciador.trabalhos.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.dto.TrabalhoRequestDTO;
 import com.gerenciador.trabalhos.dto.TrabalhoResponseDTO;
 import com.gerenciador.trabalhos.model.Disciplina;
@@ -41,6 +44,19 @@ public class TrabalhoService {
         return trabalhoRepository.findAll().stream()
                 .map(this::toDTO)
                 .toList();
+    }
+
+    public PageResponseDTO<TrabalhoResponseDTO> listarTodosPaginado(Pageable pageable) {
+        Page<Trabalho> page = trabalhoRepository.findAll(pageable);
+        return new PageResponseDTO<>(
+                page.getContent().stream().map(this::toDTO).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isFirst(),
+                page.isLast()
+        );
     }
 
     public TrabalhoResponseDTO atualizar(Long id, TrabalhoRequestDTO dto) {

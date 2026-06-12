@@ -2,10 +2,13 @@ package com.gerenciador.trabalhos.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gerenciador.trabalhos.dto.AlunoDTO;
+import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.model.Aluno;
 import com.gerenciador.trabalhos.repository.AlunoRepository;
 
@@ -42,6 +45,19 @@ public class AlunoService {
                 .stream()
                 .map(this::converterParaDTO)
                 .toList();
+    }
+
+    public PageResponseDTO<AlunoDTO> listarTodosPaginado(Pageable pageable) {
+        Page<Aluno> page = alunoRepository.findAll(pageable);
+        return new PageResponseDTO<>(
+                page.getContent().stream().map(this::converterParaDTO).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isFirst(),
+                page.isLast()
+        );
     }
 
     public AlunoDTO atualizar(Long id, AlunoDTO dto) {
@@ -91,3 +107,4 @@ public class AlunoService {
             
     }
 }
+
