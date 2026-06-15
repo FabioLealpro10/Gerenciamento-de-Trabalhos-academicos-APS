@@ -107,6 +107,8 @@ Configuração do Sistema
 Por padrão, o sistema usa H2 em memória.
 Para MySQL, é necessário ajustar a URL, usuário, senha e dialeto no arquivo application.properties.
 
+Para envio de e-mail (recuperação de senha), configure o arquivo `.env` local. Veja [CONFIGURACAO-EMAIL.md](CONFIGURACAO-EMAIL.md).
+
 Endpoints Principais
 Autenticação
 

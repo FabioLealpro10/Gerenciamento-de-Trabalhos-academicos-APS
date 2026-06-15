@@ -11,6 +11,11 @@ RUN mvn -B -DskipTests package
 FROM eclipse-temurin:17-jre
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copia jar construido
 COPY --from=build /workspace/target/*.jar app.jar
 

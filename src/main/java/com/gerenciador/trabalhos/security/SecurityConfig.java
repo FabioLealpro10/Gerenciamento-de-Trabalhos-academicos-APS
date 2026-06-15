@@ -51,6 +51,8 @@ public class SecurityConfig {
 
                                         // AUTH
                                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/auth/esqueci-senha").permitAll()
+                                        .requestMatchers(HttpMethod.POST, "/auth/verificar-codigo").permitAll()
 
                                         // APIs
                                         .requestMatchers(HttpMethod.POST, "/api/alunos/**").permitAll()

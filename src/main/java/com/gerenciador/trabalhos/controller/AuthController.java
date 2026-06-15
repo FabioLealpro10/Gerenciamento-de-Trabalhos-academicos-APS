@@ -20,11 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gerenciador.trabalhos.dto.AdminRequestDTO;
 import com.gerenciador.trabalhos.dto.AuthRequest;
 import com.gerenciador.trabalhos.dto.AuthResponse;
+import com.gerenciador.trabalhos.dto.EsqueciSenhaRequestDTO;
+import com.gerenciador.trabalhos.dto.EsqueciSenhaResponseDTO;
 import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.dto.UsuarioCredenciaisUpdateDTO;
 import com.gerenciador.trabalhos.dto.UsuarioResponseDTO;
+import com.gerenciador.trabalhos.dto.VerificarCodigoRequestDTO;
 import com.gerenciador.trabalhos.model.Usuario;
 import com.gerenciador.trabalhos.security.jwt.JwtTokenProvider;
+import com.gerenciador.trabalhos.service.RecuperacaoSenhaService;
 import com.gerenciador.trabalhos.service.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +41,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final UsuarioService usuarioService;
+    private final RecuperacaoSenhaService recuperacaoSenhaService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
@@ -53,6 +58,17 @@ public class AuthController {
                 usuario.getNome(),
                 usuario.getEmail(),
                 usuario.getRole()));
+    }
+
+    @PostMapping("/esqueci-senha")
+    public ResponseEntity<EsqueciSenhaResponseDTO> esqueciSenha(@RequestBody EsqueciSenhaRequestDTO request) {
+        return ResponseEntity.ok(recuperacaoSenhaService.solicitarCodigo(request.email()));
+    }
+
+    @PostMapping("/verificar-codigo")
+    public ResponseEntity<AuthResponse> verificarCodigo(@RequestBody VerificarCodigoRequestDTO request) {
+        return ResponseEntity.ok(
+                recuperacaoSenhaService.verificarCodigo(request.email(), request.codigo()));
     }
 
     @GetMapping("/admins")
