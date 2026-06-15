@@ -88,7 +88,7 @@ public class PesquisaService {
                 trabalho.getId(),
                 trabalho.getTitulo(),
                 trabalho.getDescricao(),
-                trabalho.getLinkArquivoTrabalho(),
+                trabalho.getCaminhoArquivoPdf(),
                 trabalho.getDataInicio(),
                 trabalho.getDataFim(),
                 trabalho.getDisciplina().getId(),

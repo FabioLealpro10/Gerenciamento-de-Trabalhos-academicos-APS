@@ -51,10 +51,6 @@ public class SecurityConfig {
 
                                         // AUTH
                                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-<<<<<<< HEAD
-=======
-                                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 
                                         // APIs
                                         .requestMatchers(HttpMethod.POST, "/api/alunos/**").permitAll()
@@ -67,12 +63,8 @@ public class SecurityConfig {
                                                         "/disciplinas/**",
                                                         "/api/disciplinas/**",
                                                         "/trabalhos/**",
-<<<<<<< HEAD
-                                                        "/entregas/**")
-=======
                                                         "/entregas/**",
                                                         "/pesquisa/**")
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
                                         .permitAll()
 
                                         // Swagger

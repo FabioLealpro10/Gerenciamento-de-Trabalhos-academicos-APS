@@ -51,8 +51,6 @@ public class UsuarioService implements UserDetailsService {
         }
     }
 
-<<<<<<< HEAD
-=======
     public Usuario registrarUsuario(String nome, String email, String rawPassword, String role) {
         validarEmailDisponivel(email, null);
         String encoded = passwordEncoder.encode(rawPassword);
@@ -66,7 +64,6 @@ public class UsuarioService implements UserDetailsService {
         return usuarioRepository.save(usuario);
     }
 
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     /** Valor gravado na coluna {@code role} do banco (ADMIN, ALUNO, PROFESSOR). */
     public String toDatabaseRole(String role) {
         if (role == null || role.isBlank()) {

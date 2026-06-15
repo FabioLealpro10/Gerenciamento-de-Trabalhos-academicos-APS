@@ -1,13 +1,6 @@
 package com.gerenciador.trabalhos.service;
 
-<<<<<<< HEAD
 import org.springframework.data.domain.PageRequest;
-=======
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +39,6 @@ public class ProfessorService {
         return converterParaDTO(professor);
     }
 
-<<<<<<< HEAD
     public PageResponseDTO<ProfessorDTO> listarTodos(int page, int size) {
         return PageResponseDTO.from(
                 professorRepository.findAll(PageRequest.of(page, size))
@@ -61,26 +53,6 @@ public class ProfessorService {
         return PageResponseDTO.from(
                 professorRepository.findByNomeContainingIgnoreCase(nome.trim(), PageRequest.of(page, size))
                         .map(this::converterParaDTO));
-=======
-    public List<ProfessorDTO> listarTodos() {
-        return professorRepository.findAll()
-                .stream()
-                .map(this::converterParaDTO)
-                .toList();
-    }
-
-    public PageResponseDTO<ProfessorDTO> listarTodosPaginado(Pageable pageable) {
-        Page<Professor> page = professorRepository.findAll(pageable);
-        return new PageResponseDTO<>(
-                page.getContent().stream().map(this::converterParaDTO).toList(),
-                page.getNumber(),
-                page.getSize(),
-                page.getTotalElements(),
-                page.getTotalPages(),
-                page.isFirst(),
-                page.isLast()
-        );
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     }
 
     public ProfessorDTO atualizar(Long id, ProfessorDTO dto) {

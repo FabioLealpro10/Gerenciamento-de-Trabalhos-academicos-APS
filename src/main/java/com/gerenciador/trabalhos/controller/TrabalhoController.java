@@ -1,13 +1,8 @@
 package com.gerenciador.trabalhos.controller;
 
-<<<<<<< HEAD
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-=======
-import java.util.List;
-
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,25 +11,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gerenciador.trabalhos.dto.PageResponseDTO;
-=======
-import org.springframework.web.bind.annotation.RestController;
-
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import com.gerenciador.trabalhos.dto.TrabalhoRequestDTO;
 import com.gerenciador.trabalhos.dto.TrabalhoResponseDTO;
 import com.gerenciador.trabalhos.service.TrabalhoService;
 
-<<<<<<< HEAD
-=======
-import org.springframework.web.bind.annotation.RequestBody;
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -44,7 +30,6 @@ public class TrabalhoController {
 
     private final TrabalhoService trabalhoService;
 
-<<<<<<< HEAD
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ResponseEntity<TrabalhoResponseDTO> cadastrar(
@@ -57,17 +42,10 @@ public class TrabalhoController {
 
         TrabalhoRequestDTO dto = new TrabalhoRequestDTO(titulo, descricao, dataInicio, dataFim, disciplinaId);
         return ResponseEntity.ok(trabalhoService.cadastrar(dto, arquivo));
-=======
-    @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-    public ResponseEntity<TrabalhoResponseDTO> cadastrar(@RequestBody TrabalhoRequestDTO dto) {
-        return ResponseEntity.ok(trabalhoService.cadastrar(dto));
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-<<<<<<< HEAD
     public ResponseEntity<PageResponseDTO<TrabalhoResponseDTO>> listar(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -96,18 +74,6 @@ public class TrabalhoController {
 
         TrabalhoRequestDTO dto = new TrabalhoRequestDTO(titulo, descricao, dataInicio, dataFim, disciplinaId);
         return ResponseEntity.ok(trabalhoService.atualizar(id, dto, arquivo));
-=======
-    public ResponseEntity<List<TrabalhoResponseDTO>> listar() {
-        return ResponseEntity.ok(trabalhoService.listarTodos());
-    }
-
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-    public ResponseEntity<TrabalhoResponseDTO> atualizar(
-            @PathVariable Long id,
-            @RequestBody TrabalhoRequestDTO dto) {
-        return ResponseEntity.ok(trabalhoService.atualizar(id, dto));
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     }
 
     @DeleteMapping("/{id}")
@@ -117,7 +83,6 @@ public class TrabalhoController {
         return ResponseEntity.noContent().build();
     }
 
-<<<<<<< HEAD
     @GetMapping("/disciplina/{disciplinaId}")
     @PreAuthorize("hasRole('ALUNO') or hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ResponseEntity<PageResponseDTO<TrabalhoResponseDTO>> listarPorDisciplina(
@@ -136,12 +101,5 @@ public class TrabalhoController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"trabalho-" + id + ".pdf\"")
                 .body(resource);
-=======
-    //  Rota especial: Buscar trabalhos por disciplina
-    @GetMapping("/disciplina/{disciplinaId}")
-    @PreAuthorize("hasRole('ALUNO') or hasRole('ADMIN') or hasRole('PROFESSOR')")
-    public ResponseEntity<List<TrabalhoResponseDTO>> listarPorDisciplina(@PathVariable Long disciplinaId) {
-        return ResponseEntity.ok(trabalhoService.listarPorDisciplina(disciplinaId));
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     }
 }

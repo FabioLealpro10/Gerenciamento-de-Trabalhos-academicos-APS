@@ -2,11 +2,8 @@ package com.gerenciador.trabalhos.dto;
 
 import java.util.List;
 
-<<<<<<< HEAD
 import org.springframework.data.domain.Page;
 
-=======
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 public record PageResponseDTO<T>(
         List<T> content,
         int page,
@@ -15,7 +12,6 @@ public record PageResponseDTO<T>(
         int totalPages,
         boolean first,
         boolean last) {
-<<<<<<< HEAD
 
     public static <T> PageResponseDTO<T> from(Page<T> page) {
         return new PageResponseDTO<>(
@@ -27,6 +23,4 @@ public record PageResponseDTO<T>(
                 page.isFirst(),
                 page.isLast());
     }
-=======
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 }

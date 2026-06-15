@@ -13,11 +13,6 @@ import com.gerenciador.trabalhos.model.Professor;
 public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 
     List<Professor> findByNomeContainingIgnoreCase(String nome);
-<<<<<<< HEAD
 
     Page<Professor> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
-=======
-    
-    Page<Professor> findAll(Pageable pageable);
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 }

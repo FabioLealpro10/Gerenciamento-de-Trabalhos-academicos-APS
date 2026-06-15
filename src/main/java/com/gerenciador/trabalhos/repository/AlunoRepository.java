@@ -13,11 +13,6 @@ import com.gerenciador.trabalhos.model.Aluno;
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     List<Aluno> findByNomeContainingIgnoreCase(String nome);
-<<<<<<< HEAD
 
     Page<Aluno> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
-=======
-    
-    Page<Aluno> findAll(Pageable pageable);
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 }

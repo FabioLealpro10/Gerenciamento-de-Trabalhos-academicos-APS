@@ -1,10 +1,5 @@
 package com.gerenciador.trabalhos.controller;
 
-<<<<<<< HEAD
-=======
-import java.util.List;
-
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,17 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gerenciador.trabalhos.dto.AlunoDTO;
 import com.gerenciador.trabalhos.dto.PageResponseDTO;
-=======
-import org.springframework.web.bind.annotation.RestController;
-
-import com.gerenciador.trabalhos.dto.AlunoDTO;
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import com.gerenciador.trabalhos.service.AlunoService;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +36,6 @@ public class AlunoController {
 
     @GetMapping
     @PreAuthorize("hasRole('ALUNO') or hasRole('ADMIN') or hasRole('PROFESSOR')")
-<<<<<<< HEAD
     public ResponseEntity<PageResponseDTO<AlunoDTO>> listarTodos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -61,10 +49,6 @@ public class AlunoController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(alunoService.pesquisarPorNome(nome, page, size));
-=======
-    public ResponseEntity<List<AlunoDTO>> listarTodos() {
-        return ResponseEntity.ok(alunoService.listarTodos());
->>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     }
 
     @GetMapping("/{id}")
