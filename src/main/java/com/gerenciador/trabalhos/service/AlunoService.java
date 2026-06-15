@@ -1,6 +1,13 @@
 package com.gerenciador.trabalhos.service;
 
+<<<<<<< HEAD
 import org.springframework.data.domain.PageRequest;
+=======
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +44,7 @@ public class AlunoService {
         return converterParaDTO(aluno);
     }
 
+<<<<<<< HEAD
     public PageResponseDTO<AlunoDTO> listarTodos(int page, int size) {
         return PageResponseDTO.from(
                 alunoRepository.findAll(PageRequest.of(page, size))
@@ -51,6 +59,26 @@ public class AlunoService {
         return PageResponseDTO.from(
                 alunoRepository.findByNomeContainingIgnoreCase(nome.trim(), PageRequest.of(page, size))
                         .map(this::converterParaDTO));
+=======
+    public List<AlunoDTO> listarTodos() {
+        return alunoRepository.findAll()
+                .stream()
+                .map(this::converterParaDTO)
+                .toList();
+    }
+
+    public PageResponseDTO<AlunoDTO> listarTodosPaginado(Pageable pageable) {
+        Page<Aluno> page = alunoRepository.findAll(pageable);
+        return new PageResponseDTO<>(
+                page.getContent().stream().map(this::converterParaDTO).toList(),
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isFirst(),
+                page.isLast()
+        );
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     }
 
     public AlunoDTO atualizar(Long id, AlunoDTO dto) {
@@ -100,3 +128,7 @@ public class AlunoService {
             
     }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce

@@ -36,6 +36,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // ROTAS PÚBLICAS
         if (path.equals("/auth/login")
+<<<<<<< HEAD
+=======
+                || path.equals("/auth/register")
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
                 || path.startsWith("/h2-console")) {

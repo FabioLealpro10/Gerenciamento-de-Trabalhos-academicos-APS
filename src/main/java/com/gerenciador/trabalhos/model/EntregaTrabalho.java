@@ -14,7 +14,11 @@ public class EntregaTrabalho {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+<<<<<<< HEAD
     private String caminhoArquivoPdf;
+=======
+    private String linkArquivo;
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     private String dataEntrega;
     private Float nota;
     private String feedback;

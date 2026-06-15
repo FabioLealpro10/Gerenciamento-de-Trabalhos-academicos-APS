@@ -1,6 +1,10 @@
 package com.gerenciador.trabalhos.controller;
 
 import org.springframework.http.ResponseEntity;
+<<<<<<< HEAD
+=======
+import org.springframework.security.access.prepost.PreAuthorize;
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gerenciador.trabalhos.dto.AuthRequest;
 import com.gerenciador.trabalhos.dto.AuthResponse;
+<<<<<<< HEAD
+=======
+import com.gerenciador.trabalhos.dto.RegisterRequest;
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import com.gerenciador.trabalhos.model.Usuario;
 import com.gerenciador.trabalhos.security.jwt.JwtTokenProvider;
 import com.gerenciador.trabalhos.service.UsuarioService;
@@ -43,6 +51,16 @@ public class AuthController {
                 usuario.getEmail(),
                 usuario.getRole()));
     }
+<<<<<<< HEAD
+=======
+
+    @PostMapping("/register")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Usuario> register(@RequestBody RegisterRequest request) {
+        Usuario usuario = usuarioService.registrarUsuario(request.getNome(), request.getEmail(), request.getPassword(), "ADMIN");
+        return ResponseEntity.ok(usuario);
+    }
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 }
 
 

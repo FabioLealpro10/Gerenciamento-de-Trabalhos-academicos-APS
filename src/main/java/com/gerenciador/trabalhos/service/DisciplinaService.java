@@ -2,7 +2,12 @@ package com.gerenciador.trabalhos.service;
 
 import java.util.List;
 
+<<<<<<< HEAD
 import org.springframework.data.domain.PageRequest;
+=======
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import org.springframework.stereotype.Service;
 
 import com.gerenciador.trabalhos.dto.DisciplinaRequestDTO;
@@ -59,6 +64,7 @@ public class DisciplinaService {
                 alunos);
     }
 
+<<<<<<< HEAD
     public PageResponseDTO<DisciplinaResponseDTO> listarTodas(int page, int size) {
         return PageResponseDTO.from(
                 disciplinaRepository.findAll(PageRequest.of(page, size))
@@ -79,6 +85,38 @@ public class DisciplinaService {
         return PageResponseDTO.from(
                 disciplinaRepository.findByNomeContainingIgnoreCase(nome.trim(), PageRequest.of(page, size))
                         .map(d -> buscarPorId(d.getId())));
+=======
+    public List<DisciplinaResponseDTO> listarTodas() {
+        return disciplinaRepository.findAll()
+                .stream()
+                .map(d -> buscarPorId(d.getId()))
+                .toList();
+    }
+
+    public PageResponseDTO<DisciplinaResponseDTO> listarTodasPaginado(Pageable pageable) {
+        Page<Disciplina> page = disciplinaRepository.findAll(pageable);
+        List<DisciplinaResponseDTO> content = page.getContent()
+                .stream()
+                .map(d -> buscarPorId(d.getId()))
+                .toList();
+        
+        return new PageResponseDTO<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages(),
+                page.isFirst(),
+                page.isLast()
+        );
+    }
+
+    public List<DisciplinaResponseDTO> listarPorProfessor(Long professorId) {
+        return disciplinaRepository.findByProfessorId(professorId)
+                .stream()
+                .map(d -> buscarPorId(d.getId()))
+                .toList();
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     }
 
     public DisciplinaResponseDTO atualizar(Long id, DisciplinaRequestDTO dto) {

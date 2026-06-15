@@ -16,7 +16,11 @@ public class Trabalho {
 
     private String titulo;
     private String descricao;
+<<<<<<< HEAD
     private String caminhoArquivoPdf;
+=======
+    private String linkArquivoTrabalho;
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     private String dataInicio;
     private String dataFim;
 

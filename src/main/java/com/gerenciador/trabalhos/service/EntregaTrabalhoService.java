@@ -3,16 +3,26 @@ package com.gerenciador.trabalhos.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+<<<<<<< HEAD
 import org.springframework.core.io.Resource;
+=======
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+<<<<<<< HEAD
 import org.springframework.web.multipart.MultipartFile;
+=======
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 
 import com.gerenciador.trabalhos.dto.EntregaTrabalhoCorrecaoDTO;
 import com.gerenciador.trabalhos.dto.EntregaTrabalhoRequestDTO;
 import com.gerenciador.trabalhos.dto.EntregaTrabalhoResponseDTO;
+<<<<<<< HEAD
+=======
+import com.gerenciador.trabalhos.dto.EntregaTrabalhoUpdateDTO;
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.exception.EntregaForaDoPrazoException;
 import com.gerenciador.trabalhos.model.Aluno;
@@ -32,9 +42,14 @@ public class EntregaTrabalhoService {
     private final EntregaTrabalhoRepository entregaRepo;
     private final TrabalhoRepository trabalhoRepo;
     private final AlunoRepository alunoRepo;
+<<<<<<< HEAD
     private final ArquivoService arquivoService;
 
     public EntregaTrabalhoResponseDTO entregar(EntregaTrabalhoRequestDTO dto, MultipartFile arquivo) {
+=======
+
+    public EntregaTrabalhoResponseDTO entregar(EntregaTrabalhoRequestDTO dto) {
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
 
         Trabalho trabalho = trabalhoRepo.findById(dto.trabalhoId())
                 .orElseThrow(() -> new RuntimeException("Trabalho não encontrado"));
@@ -49,10 +64,15 @@ public class EntregaTrabalhoService {
 
         validarPrazoEntrega(trabalho, dto.dataEntrega(), aluno);
 
+<<<<<<< HEAD
         String caminhoPdf = arquivoService.salvarPdf(arquivo, "entregas");
 
         EntregaTrabalho entrega = new EntregaTrabalho();
         entrega.setCaminhoArquivoPdf(caminhoPdf);
+=======
+        EntregaTrabalho entrega = new EntregaTrabalho();
+        entrega.setLinkArquivo(dto.linkArquivo());
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
         entrega.setDataEntrega(dto.dataEntrega());
         entrega.setTrabalho(trabalho);
         entrega.setAluno(aluno);
@@ -104,7 +124,11 @@ public class EntregaTrabalhoService {
                     trabalho,
                     aluno,
                     entrega.getId(),
+<<<<<<< HEAD
                     entrega.getCaminhoArquivoPdf(),
+=======
+                    entrega.getLinkArquivo(),
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
                     entrega.getDataEntrega(),
                     null,
                     "trabalho não corrigido");
@@ -113,14 +137,19 @@ public class EntregaTrabalhoService {
         return toDTO(entrega);
     }
 
+<<<<<<< HEAD
     public EntregaTrabalhoResponseDTO atualizar(
             Long trabalhoId, Long alunoId, String dataEntrega, MultipartFile arquivo) {
 
+=======
+    public EntregaTrabalhoResponseDTO atualizar(Long trabalhoId, Long alunoId, EntregaTrabalhoUpdateDTO dto) {
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
         EntregaTrabalho entrega = entregaRepo.findByAlunoIdAndTrabalhoId(alunoId, trabalhoId)
                 .orElseThrow(() -> new RuntimeException("Entrega não encontrada"));
 
         Trabalho trabalho = entrega.getTrabalho();
 
+<<<<<<< HEAD
         if (arquivo != null && !arquivo.isEmpty()) {
             arquivoService.excluirSeExistir(entrega.getCaminhoArquivoPdf());
             entrega.setCaminhoArquivoPdf(arquivoService.salvarPdf(arquivo, "entregas"));
@@ -128,6 +157,14 @@ public class EntregaTrabalhoService {
         if (dataEntrega != null) {
             validarPrazoEntrega(trabalho, dataEntrega, entrega.getAluno());
             entrega.setDataEntrega(dataEntrega);
+=======
+        if (dto.linkArquivo() != null) {
+            entrega.setLinkArquivo(dto.linkArquivo());
+        }
+        if (dto.dataEntrega() != null) {
+            validarPrazoEntrega(trabalho, dto.dataEntrega(), entrega.getAluno());
+            entrega.setDataEntrega(dto.dataEntrega());
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
         }
 
         entregaRepo.save(entrega);
@@ -149,6 +186,7 @@ public class EntregaTrabalhoService {
         return toDTO(entrega, "Trabalho corrigido com sucesso");
     }
 
+<<<<<<< HEAD
     public Resource baixarPdf(Long id) {
         EntregaTrabalho entrega = entregaRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Entrega não encontrada"));
@@ -156,6 +194,8 @@ public class EntregaTrabalhoService {
         return arquivoService.carregarArquivo(entrega.getCaminhoArquivoPdf());
     }
 
+=======
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
     private void validarPrazoEntrega(Trabalho trabalho, String dataEntrega, Aluno aluno) {
         if (trabalho.getDataFim() == null || trabalho.getDataFim().isBlank()) {
             return;
@@ -198,7 +238,11 @@ public class EntregaTrabalhoService {
             Trabalho trabalho,
             Aluno aluno,
             Long id,
+<<<<<<< HEAD
             String caminhoArquivoPdf,
+=======
+            String linkArquivo,
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
             String dataEntrega,
             Float nota,
             String mensagem) {
@@ -211,7 +255,11 @@ public class EntregaTrabalhoService {
 
         return new EntregaTrabalhoResponseDTO(
                 id,
+<<<<<<< HEAD
                 caminhoArquivoPdf,
+=======
+                linkArquivo,
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
                 dataEntrega,
                 nota,
                 null,
@@ -238,7 +286,11 @@ public class EntregaTrabalhoService {
 
         return new EntregaTrabalhoResponseDTO(
                 e.getId(),
+<<<<<<< HEAD
                 e.getCaminhoArquivoPdf(),
+=======
+                e.getLinkArquivo(),
+>>>>>>> f099fe231ca3115077bf2c1ca32f1cbcf3dd06ce
                 e.getDataEntrega(),
                 e.getNota(),
                 e.getFeedback(),
