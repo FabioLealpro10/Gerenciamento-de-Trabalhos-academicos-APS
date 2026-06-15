@@ -1,19 +1,28 @@
 package com.gerenciador.trabalhos.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gerenciador.trabalhos.dto.AdminRequestDTO;
 import com.gerenciador.trabalhos.dto.AuthRequest;
 import com.gerenciador.trabalhos.dto.AuthResponse;
-import com.gerenciador.trabalhos.dto.RegisterRequest;
+import com.gerenciador.trabalhos.dto.PageResponseDTO;
+import com.gerenciador.trabalhos.dto.UsuarioCredenciaisUpdateDTO;
+import com.gerenciador.trabalhos.dto.UsuarioResponseDTO;
 import com.gerenciador.trabalhos.model.Usuario;
 import com.gerenciador.trabalhos.security.jwt.JwtTokenProvider;
 import com.gerenciador.trabalhos.service.UsuarioService;
@@ -46,17 +55,40 @@ public class AuthController {
                 usuario.getRole()));
     }
 
-    @PostMapping("/register")
+    @GetMapping("/admins")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Usuario> register(@RequestBody RegisterRequest request) {
-        Usuario usuario = usuarioService.registrarUsuario(
-                request.getNome(),
-                request.getEmail(),
-                request.getPassword(),
-                "ADMIN");
-        return ResponseEntity.ok(usuario);
+    public ResponseEntity<PageResponseDTO<UsuarioResponseDTO>> listarAdmins(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(usuarioService.listarAdmins(page, size));
+    }
+
+    @GetMapping("/admins/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioResponseDTO> buscarAdmin(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.buscarAdminPorId(id));
+    }
+
+    @PostMapping("/admins")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioResponseDTO> cadastrarAdmin(@RequestBody AdminRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.cadastrarAdmin(dto));
+    }
+
+    @PatchMapping("/admins/{id}/credenciais")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UsuarioResponseDTO> atualizarCredenciaisAdmin(
+            @PathVariable Long id,
+            @RequestBody UsuarioCredenciaisUpdateDTO dto) {
+        String emailLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(usuarioService.atualizarCredenciaisAdmin(id, dto, emailLogado));
+    }
+
+    @DeleteMapping("/admins/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deletarAdmin(@PathVariable Long id) {
+        String emailLogado = SecurityContextHolder.getContext().getAuthentication().getName();
+        usuarioService.deletarAdmin(id, emailLogado);
+        return ResponseEntity.noContent().build();
     }
 }
-
-
-

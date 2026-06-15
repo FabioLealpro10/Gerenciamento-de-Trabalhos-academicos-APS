@@ -63,8 +63,7 @@ public class SecurityConfig {
                                                         "/disciplinas/**",
                                                         "/api/disciplinas/**",
                                                         "/trabalhos/**",
-                                                        "/entregas/**",
-                                                        "/pesquisa/**")
+                                                        "/entregas/**")
                                         .permitAll()
 
                                         // Swagger
