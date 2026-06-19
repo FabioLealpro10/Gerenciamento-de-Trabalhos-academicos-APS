@@ -5,10 +5,8 @@ services:
     environment:
       MYSQL_DATABASE: gerenciador
       MYSQL_USER: appuser
-      MYSQL_PASSWORD: secret
-      MYSQL_ROOT_PASSWORD: rootsecret
-    ports:
-      - "3307:3306"
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootsecret}
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -19,16 +17,19 @@ services:
 
   app:
     build: .
+    restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "9905:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/gerenciador?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_DRIVER: com.mysql.cj.jdbc.Driver
       SPRING_DATASOURCE_USERNAME: appuser
-      SPRING_DATASOURCE_PASSWORD: secret
-      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-secret}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "false"
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
-      JWT_SECRET: change-this-secret-in-prod-please-123456789012345678901234567890
+      SPRING_H2_CONSOLE_ENABLED: "false"
+      JWT_SECRET: ${JWT_SECRET}
       SPRING_MAIL_HOST: smtp.gmail.com
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME}
@@ -38,21 +39,10 @@ services:
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_REQUIRED: "true"
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: smtp.gmail.com
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_PROTOCOLS: TLSv1.2
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://172.25.1.60:9904}
     depends_on:
-      - db
-
-  phpmyadmin:
-    image: phpmyadmin:latest
-    restart: unless-stopped
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: db
-      PMA_USER: appuser
-      PMA_PASSWORD: secret
-      PMA_ROOT_PASSWORD: rootsecret
-    depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   db_data:

@@ -58,6 +58,9 @@ SPRING_MAIL_PASSWORD=abcdefghijklmnop
 
 Substitua pelos seus valores. A senha de app vai **sem espaços**.
 
+> O Docker Compose lê o `.env` automaticamente na raiz do projeto.  
+> Se o arquivo não existir, a API sobe normalmente, mas o envio de e-mail não funciona.
+
 ---
 
 ### 3. Subir a aplicação com Docker

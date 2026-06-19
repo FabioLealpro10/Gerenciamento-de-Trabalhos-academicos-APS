@@ -1,4 +1,4 @@
-FROM maven:3.8.8-eclipse-temurin-17 AS build
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /workspace
 
 # Copia pom e wrapper para cache das dependências

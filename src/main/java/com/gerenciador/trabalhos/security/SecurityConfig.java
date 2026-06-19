@@ -1,7 +1,9 @@
 package com.gerenciador.trabalhos.security;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +29,9 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
         private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+        @Value("${app.cors.allowed-origins:http://127.0.0.1:5501,http://localhost:5501,http://localhost:4200}")
+        private String allowedOrigins;
 
         @Bean
         public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -91,11 +96,11 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of(
-                "http://127.0.0.1:5501",
-                "http://localhost:5501",
-                "http://localhost:4200"
-        ));
+        configuration.setAllowedOrigins(
+                Arrays.stream(allowedOrigins.split(","))
+                        .map(String::trim)
+                        .filter(origin -> !origin.isEmpty())
+                        .toList());
 
         configuration.setAllowedMethods(List.of(
                 "GET",

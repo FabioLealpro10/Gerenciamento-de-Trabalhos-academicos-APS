@@ -109,6 +109,8 @@ Para MySQL, é necessário ajustar a URL, usuário, senha e dialeto no arquivo a
 
 Para envio de e-mail (recuperação de senha), configure o arquivo `.env` local. Veja [CONFIGURACAO-EMAIL.md](CONFIGURACAO-EMAIL.md).
 
+Para publicar no servidor, veja [DEPLOY-SERVIDOR.md](DEPLOY-SERVIDOR.md).
+
 Endpoints Principais
 Autenticação
 
