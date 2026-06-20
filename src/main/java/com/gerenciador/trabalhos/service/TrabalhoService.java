@@ -8,9 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.dto.TrabalhoRequestDTO;
 import com.gerenciador.trabalhos.dto.TrabalhoResponseDTO;
+import com.gerenciador.trabalhos.exception.MensagensExclusao;
 import com.gerenciador.trabalhos.model.Disciplina;
 import com.gerenciador.trabalhos.model.Trabalho;
 import com.gerenciador.trabalhos.repository.DisciplinaRepository;
+import com.gerenciador.trabalhos.repository.EntregaTrabalhoRepository;
 import com.gerenciador.trabalhos.repository.TrabalhoRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class TrabalhoService {
 
     private final TrabalhoRepository trabalhoRepository;
     private final DisciplinaRepository disciplinaRepository;
+    private final EntregaTrabalhoRepository entregaTrabalhoRepository;
     private final ArquivoService arquivoService;
 
     public TrabalhoResponseDTO cadastrar(TrabalhoRequestDTO dto, MultipartFile arquivo) {
@@ -82,6 +85,10 @@ public class TrabalhoService {
     public void deletar(Long id) {
         Trabalho trabalho = trabalhoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Trabalho não encontrado"));
+
+        if (!entregaTrabalhoRepository.findByTrabalhoId(id).isEmpty()) {
+            throw new RuntimeException(MensagensExclusao.TRABALHO_COM_ENTREGAS);
+        }
 
         arquivoService.excluirSeExistir(trabalho.getCaminhoArquivoPdf());
         trabalhoRepository.delete(trabalho);

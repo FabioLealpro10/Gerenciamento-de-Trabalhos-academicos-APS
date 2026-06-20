@@ -15,6 +15,8 @@ public interface MatriculaRepository extends JpaRepository<Matricula, Long> {
 
     List<Matricula> findByAlunoId(Long alunoId);
 
+    void deleteByAlunoId(Long alunoId);
+
     Page<Matricula> findByAlunoId(Long alunoId, Pageable pageable);
 
     List<Matricula> findByDisciplinaId(Long disciplinaId);

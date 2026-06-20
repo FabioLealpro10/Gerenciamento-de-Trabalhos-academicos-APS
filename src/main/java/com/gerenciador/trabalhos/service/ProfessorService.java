@@ -6,20 +6,27 @@ import org.springframework.stereotype.Service;
 
 import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.dto.ProfessorDTO;
+import com.gerenciador.trabalhos.exception.MensagensExclusao;
 
 import com.gerenciador.trabalhos.model.Professor;
+import com.gerenciador.trabalhos.repository.DisciplinaRepository;
 import com.gerenciador.trabalhos.repository.ProfessorRepository;
 
 @Service
 public class ProfessorService {
 
     private final ProfessorRepository professorRepository;
+    private final DisciplinaRepository disciplinaRepository;
     private final PasswordEncoder passwordEncoder;
     private final UsuarioService usuarioService;
 
-    public ProfessorService(ProfessorRepository professorRepository, PasswordEncoder passwordEncoder,
+    public ProfessorService(
+            ProfessorRepository professorRepository,
+            DisciplinaRepository disciplinaRepository,
+            PasswordEncoder passwordEncoder,
             UsuarioService usuarioService) {
         this.professorRepository = professorRepository;
+        this.disciplinaRepository = disciplinaRepository;
         this.passwordEncoder = passwordEncoder;
         this.usuarioService = usuarioService;
     }
@@ -82,6 +89,14 @@ public class ProfessorService {
     }
 
     public void deletar(Long id) {
+        if (!professorRepository.existsById(id)) {
+            throw new RuntimeException("Professor não encontrado");
+        }
+
+        if (!disciplinaRepository.findByProfessorId(id).isEmpty()) {
+            throw new RuntimeException(MensagensExclusao.PROFESSOR_COM_DISCIPLINAS);
+        }
+
         professorRepository.deleteById(id);
     }
 
