@@ -4,15 +4,19 @@ import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gerenciador.trabalhos.dto.DisciplinaRequestDTO;
 import com.gerenciador.trabalhos.dto.DisciplinaResponseDTO;
 import com.gerenciador.trabalhos.dto.PageResponseDTO;
+import com.gerenciador.trabalhos.exception.MensagensExclusao;
 import com.gerenciador.trabalhos.model.Disciplina;
 import com.gerenciador.trabalhos.model.Professor;
+import com.gerenciador.trabalhos.model.Trabalho;
 import com.gerenciador.trabalhos.repository.DisciplinaRepository;
 import com.gerenciador.trabalhos.repository.MatriculaRepository;
 import com.gerenciador.trabalhos.repository.ProfessorRepository;
+import com.gerenciador.trabalhos.repository.TrabalhoRepository;
 
 @Service
 public class DisciplinaService {
@@ -20,11 +24,20 @@ public class DisciplinaService {
     private final DisciplinaRepository disciplinaRepository;
     private final ProfessorRepository professorRepository;
     private final MatriculaRepository matriculaRepository;
+    private final TrabalhoRepository trabalhoRepository;
+    private final TrabalhoService trabalhoService;
 
-    public DisciplinaService(DisciplinaRepository d, ProfessorRepository p, MatriculaRepository m) {
-        this.disciplinaRepository = d;
-        this.professorRepository = p;
-        this.matriculaRepository = m;
+    public DisciplinaService(
+            DisciplinaRepository disciplinaRepository,
+            ProfessorRepository professorRepository,
+            MatriculaRepository matriculaRepository,
+            TrabalhoRepository trabalhoRepository,
+            TrabalhoService trabalhoService) {
+        this.disciplinaRepository = disciplinaRepository;
+        this.professorRepository = professorRepository;
+        this.matriculaRepository = matriculaRepository;
+        this.trabalhoRepository = trabalhoRepository;
+        this.trabalhoService = trabalhoService;
     }
 
     public Disciplina criar(DisciplinaRequestDTO dto) {
@@ -103,5 +116,21 @@ public class DisciplinaService {
         disciplinaRepository.save(disciplina);
 
         return buscarPorId(disciplina.getId());
+    }
+
+    @Transactional
+    public void deletar(Long id) {
+        Disciplina disciplina = disciplinaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
+
+        if (!matriculaRepository.findByDisciplinaId(id).isEmpty()) {
+            throw new RuntimeException(MensagensExclusao.DISCIPLINA_COM_MATRICULAS);
+        }
+
+        for (Trabalho trabalho : trabalhoRepository.findByDisciplinaId(id)) {
+            trabalhoService.deletar(trabalho.getId());
+        }
+
+        disciplinaRepository.delete(disciplina);
     }
 }

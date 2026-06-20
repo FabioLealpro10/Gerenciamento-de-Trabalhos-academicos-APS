@@ -6,8 +6,7 @@ public final class MensagensExclusao {
     }
 
     public static final String TRABALHO_COM_ENTREGAS =
-            "Não foi possível excluir este trabalho porque existem entregas de alunos vinculadas a ele. "
-                    + "Remova as entregas antes de excluir o trabalho.";
+            "Não foi possível excluir este trabalho. Verifique se ainda existem entregas vinculadas a ele.";
 
     public static final String ALUNO_COM_ENTREGAS =
             "Não foi possível excluir este aluno porque existem entregas de trabalho vinculadas a ele. "

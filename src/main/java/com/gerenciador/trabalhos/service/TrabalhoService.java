@@ -3,13 +3,14 @@ package com.gerenciador.trabalhos.service;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.dto.TrabalhoRequestDTO;
 import com.gerenciador.trabalhos.dto.TrabalhoResponseDTO;
-import com.gerenciador.trabalhos.exception.MensagensExclusao;
 import com.gerenciador.trabalhos.model.Disciplina;
+import com.gerenciador.trabalhos.model.EntregaTrabalho;
 import com.gerenciador.trabalhos.model.Trabalho;
 import com.gerenciador.trabalhos.repository.DisciplinaRepository;
 import com.gerenciador.trabalhos.repository.EntregaTrabalhoRepository;
@@ -82,13 +83,15 @@ public class TrabalhoService {
         return toDTO(trabalho);
     }
 
+    @Transactional
     public void deletar(Long id) {
         Trabalho trabalho = trabalhoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Trabalho não encontrado"));
 
-        if (!entregaTrabalhoRepository.findByTrabalhoId(id).isEmpty()) {
-            throw new RuntimeException(MensagensExclusao.TRABALHO_COM_ENTREGAS);
+        for (EntregaTrabalho entrega : entregaTrabalhoRepository.findByTrabalhoId(id)) {
+            arquivoService.excluirSeExistir(entrega.getCaminhoArquivoPdf());
         }
+        entregaTrabalhoRepository.deleteByTrabalhoId(id);
 
         arquivoService.excluirSeExistir(trabalho.getCaminhoArquivoPdf());
         trabalhoRepository.delete(trabalho);

@@ -19,6 +19,8 @@ public interface EntregaTrabalhoRepository extends JpaRepository<EntregaTrabalho
 
     void deleteByAlunoId(Long alunoId);
 
+    void deleteByTrabalhoId(Long trabalhoId);
+
     Optional<EntregaTrabalho> findByAlunoIdAndTrabalhoId(Long alunoId, Long trabalhoId);
 
     Page<EntregaTrabalho> findByTrabalhoId(Long trabalhoId, Pageable pageable);

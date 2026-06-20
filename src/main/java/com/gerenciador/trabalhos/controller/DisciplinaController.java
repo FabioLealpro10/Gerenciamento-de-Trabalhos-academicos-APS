@@ -106,6 +106,13 @@ public class DisciplinaController {
         return ResponseEntity.ok(disciplinaService.atualizar(id, dto));
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        disciplinaService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/matricular")
     @PreAuthorize("hasRole('ALUNO') or hasRole('ADMIN') or hasRole('PROFESSOR')")
     public ResponseEntity<Matricula> matricularAluno(@RequestBody MatriculaRequestDTO dto) {
