@@ -12,7 +12,6 @@ import com.gerenciador.trabalhos.dto.PageResponseDTO;
 import com.gerenciador.trabalhos.exception.MensagensExclusao;
 import com.gerenciador.trabalhos.model.Disciplina;
 import com.gerenciador.trabalhos.model.Professor;
-import com.gerenciador.trabalhos.model.Trabalho;
 import com.gerenciador.trabalhos.repository.DisciplinaRepository;
 import com.gerenciador.trabalhos.repository.MatriculaRepository;
 import com.gerenciador.trabalhos.repository.ProfessorRepository;
@@ -25,19 +24,16 @@ public class DisciplinaService {
     private final ProfessorRepository professorRepository;
     private final MatriculaRepository matriculaRepository;
     private final TrabalhoRepository trabalhoRepository;
-    private final TrabalhoService trabalhoService;
 
     public DisciplinaService(
             DisciplinaRepository disciplinaRepository,
             ProfessorRepository professorRepository,
             MatriculaRepository matriculaRepository,
-            TrabalhoRepository trabalhoRepository,
-            TrabalhoService trabalhoService) {
+            TrabalhoRepository trabalhoRepository) {
         this.disciplinaRepository = disciplinaRepository;
         this.professorRepository = professorRepository;
         this.matriculaRepository = matriculaRepository;
         this.trabalhoRepository = trabalhoRepository;
-        this.trabalhoService = trabalhoService;
     }
 
     public Disciplina criar(DisciplinaRequestDTO dto) {
@@ -123,12 +119,17 @@ public class DisciplinaService {
         Disciplina disciplina = disciplinaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
 
-        if (!matriculaRepository.findByDisciplinaId(id).isEmpty()) {
-            throw new RuntimeException(MensagensExclusao.DISCIPLINA_COM_MATRICULAS);
-        }
+        int matriculas = matriculaRepository.findByDisciplinaId(id).size();
+        int trabalhos = trabalhoRepository.findByDisciplinaId(id).size();
 
-        for (Trabalho trabalho : trabalhoRepository.findByDisciplinaId(id)) {
-            trabalhoService.deletar(trabalho.getId());
+        if (matriculas > 0 && trabalhos > 0) {
+            throw new RuntimeException(MensagensExclusao.disciplinaComVinculos(matriculas, trabalhos));
+        }
+        if (matriculas > 0) {
+            throw new RuntimeException(MensagensExclusao.disciplinaComMatriculas(matriculas));
+        }
+        if (trabalhos > 0) {
+            throw new RuntimeException(MensagensExclusao.disciplinaComTrabalhos(trabalhos));
         }
 
         disciplinaRepository.delete(disciplina);

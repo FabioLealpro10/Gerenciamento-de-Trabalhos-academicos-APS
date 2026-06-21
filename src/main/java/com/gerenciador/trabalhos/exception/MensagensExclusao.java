@@ -28,6 +28,25 @@ public final class MensagensExclusao {
             "Não foi possível excluir esta disciplina porque existem alunos matriculados nela. "
                     + "Remova as matrículas antes de excluir a disciplina.";
 
+    public static String disciplinaComMatriculas(int quantidade) {
+        return "Não foi possível excluir esta disciplina porque existem "
+                + quantidade + " aluno(s) matriculado(s) nela. "
+                + "Remova as matrículas antes de excluir a disciplina.";
+    }
+
+    public static String disciplinaComTrabalhos(int quantidade) {
+        return "Não foi possível excluir esta disciplina porque existem "
+                + quantidade + " trabalho(s) cadastrado(s) nela. "
+                + "Remova os trabalhos antes de excluir a disciplina.";
+    }
+
+    public static String disciplinaComVinculos(int matriculas, int trabalhos) {
+        return "Não foi possível excluir esta disciplina porque existem "
+                + matriculas + " aluno(s) matriculado(s) e "
+                + trabalhos + " trabalho(s) cadastrado(s) nela. "
+                + "Remova os vínculos antes de excluir a disciplina.";
+    }
+
     public static final String GENERICA =
             "Não foi possível excluir este registro porque existem dados vinculados a ele no sistema. "
                     + "Remova os vínculos antes de tentar novamente.";
